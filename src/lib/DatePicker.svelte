@@ -14,6 +14,18 @@
   /** Date value. It's `null` if no date is selected */
   export let value: Date | null = null
 
+  // markedDates: { "year": { "month": [day, day, day] } }
+  export let markedDates: Record<string, Record<string, Array<number>>> = {}
+  function isMarked(day: CalendarDay, marked) {
+    const { year, month, number } = day;
+    let y = `${year}`
+    let m = `${month}`
+    let d = `${number}`
+
+    const res = marked[y] && marked[y][m] && marked[y][m].includes(d)
+    return res
+  }
+
   function setValue(d: Date) {
     if (d.getTime() !== value?.getTime()) {
       browseDate = clamp(d, min, max)
@@ -297,6 +309,7 @@
           <div
             class="cell"
             on:click={() => selectDay(calendarDay)}
+            class:marked={isMarked(calendarDay, markedDates)}
             class:disabled={!dayIsInRange(calendarDay, min, max)}
             class:selected={calendarDay.year === value?.getFullYear() &&
               calendarDay.month === value?.getMonth() &&
@@ -440,4 +453,8 @@
       color: var(--date-picker-selected-color, inherit)
       background: var(--date-picker-selected-background, rgba(2, 105, 247, 0.2))
       border: 2px solid var(--date-picker-highlight-border, #0269f7)
+    &.marked
+      color: var(--date-picker-marked-color, inherit)
+      background: var(--date-picker-marked-background, rgba(2, 105, 247, 0.2))
+      border: 2px solid var(--date-picker-marked-border, #0269f7)
 </style>

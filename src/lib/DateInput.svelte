@@ -36,6 +36,8 @@
   export let value: Date | null = null
   $: store.set(value)
 
+  /** Marked dates */
+  export let markedDates: Record<string, Record<string, Array<number>>> = {}
   /** The earliest value the user can select */
   export let min = new Date(defaultDate.getFullYear() - 20, 0, 1)
   /** The latest value the user can select */
@@ -162,6 +164,7 @@
         {max}
         {locale}
         {browseWithoutSelecting}
+        {markedDates}
       />
     </div>
   {/if}
